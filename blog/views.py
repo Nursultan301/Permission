@@ -8,17 +8,18 @@ from blog.models import Post
 from blog.permissions import AuthorPermissionsMixin, MembersPermissionsMixin
 
 
-class PostListView(generic.ListView):
-    model = Post
-
-
+# class PostListView(generic.ListView):
+#     model = Post
+#
+#
 @method_decorator(login_required, name='get')
 class PostDetailView(MembersPermissionsMixin, generic.DetailView):
     model = Post
-    # permission_required = ['blog.view_post']
+    permission_required = ['blog.view_post']
 
-    # def post(self):
-    #     pass
+    def post(self):
+        pass
+
 
 # @method_decorator(login_required, name='post')
 # class PostDetailView(generic.View):
@@ -28,3 +29,9 @@ class PostDetailView(MembersPermissionsMixin, generic.DetailView):
 #
 #     def post(self):
 #         pass
+############################## Permissions ##########################################################
+
+########################################### ORM ###################################################
+class PostListView(generic.ListView):
+    # queryset = Post.custom_manager.custom_filter(author__username='Test1')
+    queryset = Post.custom_manager.custom_order_by('-title')
